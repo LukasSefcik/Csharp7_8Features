@@ -23,8 +23,8 @@ namespace Csharp_8
             if (o is null) Console.WriteLine("it's a const pattern");
 
             // type pattern
-            if (o is Person p) Console.WriteLine($"it's a person {p.Name}");
-            if (o is Person p2 && p2.Name.StartsWith("Jan")) Console.WriteLine($"it's a person starting with Jan {p2.Name}");
+            if (o is Person p) Console.WriteLine($"it's a person {p.FirstName}");
+            if (o is Person p2 && p2.FirstName.StartsWith("Jan")) Console.WriteLine($"it's a person starting with Jan {p2.FirstName}");
 
             // var pattern
             if (o is var x) Console.WriteLine($"it's a var pattern with the type {x?.GetType()?.Name}");
@@ -40,11 +40,11 @@ namespace Csharp_8
                 case int i:
                     Console.WriteLine("it's an int");
                     break;
-                case Person p when p.Name.StartsWith("Jan"):
-                    Console.WriteLine($"a Jan person {p.Name}");
+                case Person p when p.FirstName.StartsWith("Jan"):
+                    Console.WriteLine($"a Jan person {p.FirstName}");
                     break;
                 case Person p:
-                    Console.WriteLine($"any other person {p.Name}");
+                    Console.WriteLine($"any other person {p.FirstName}");
                     break;
                 case var x:
                     Console.WriteLine($"it's a var pattern with the type {x?.GetType().Name} ");
@@ -57,12 +57,24 @@ namespace Csharp_8
         class Person
         {
 
-            public Person(string name)
+            public Person(string firstName) :
+                this(firstName, string.Empty)
+            { }
+
+            public Person(string firstName, string lastName)
             {
-                Name = name;
+                FirstName = firstName;
+                LastName = lastName;
             }
 
-            public string Name { get; set; }
+            public void Deconstruct(out string firstName, out string lastName)
+            {
+                firstName = FirstName;
+                lastName = LastName;
+            }
+
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
         }
 
         #endregion
@@ -93,6 +105,20 @@ namespace Csharp_8
             (int x1, string s1) = (3, "one");
             Console.WriteLine($"{x1} {s1}");
         }
+
+        #endregion
+
+        #region Deconstructors
+
+        void Deconstructor()
+        {
+            (int n, string s) = (42, "magic");
+
+            var p1 = new Person("Tom", "Turbo");
+            (string firstName, string lastName) = p1;
+        }
+
+        // https://github.com/Burgyn/Sample.DeconstructorsForNonTuple
 
         #endregion
 
