@@ -93,6 +93,11 @@ namespace Csharp_8
                 LastName = lastName;
             }
 
+            public void Deconstruct(out string firstName)
+            {
+                firstName = FirstName;
+            }
+
             public void Deconstruct(out string firstName, out string lastName)
             {
                 firstName = FirstName;
@@ -129,8 +134,15 @@ namespace Csharp_8
         public void Tuples()
         {
             (int x1, string s1) = (3, "one");
-            Console.WriteLine($"{x1} {s1}");
+
+            var person = GetPerson();
+            (var firstName, var lastName) = GetPerson();
+
+            Console.WriteLine($"{person.firstName} {s1}");
         }
+
+
+        private (string firstName, string lastName) GetPerson() => ("Milan", "Vojciniak");
 
         #endregion
 
@@ -157,7 +169,7 @@ namespace Csharp_8
             private int id = GetId();
 
             public Person2(string name) => names.TryAdd(id, name); // constructors
-            ~Person2() => names.TryRemove(id, out *);              // destructors
+            ~Person2() => names.TryRemove(id, out var x);          // destructors
             public string Name
             {
                 get => names[id];                                 // getters

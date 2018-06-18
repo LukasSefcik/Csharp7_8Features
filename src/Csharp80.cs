@@ -120,8 +120,8 @@ namespace Csharp_8
                 balance = Balance;
             }
 
-            public BankAccount With(string name = Name, decimal balance = Balance) =>
-                new BankAccount(name, balance);
+            //public BankAccount With(string name = Name, decimal balance = Balance) =>
+            //    new BankAccount(name, balance);
         }
 
         // With – kopírovanie
