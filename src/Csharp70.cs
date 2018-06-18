@@ -1,9 +1,35 @@
 using System;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace Csharp_8
 {
     public class Csharp70
     {
+        #region Out Vars
+
+        public void OutVars()
+        {
+            Out(out int a);
+            Console.WriteLine($"after the invocation of {nameof(Out)}, {nameof(a)} = {a}");
+
+            TryParse();
+        }
+
+        void Out(out int x)
+        {
+            x = 2;
+        }
+
+        void TryParse()
+        {
+            if (int.TryParse("42", out int result))
+            {
+                Console.WriteLine($"the result is {result}");
+            }
+        }
+
+        #endregion
 
         #region Pattern Matching
 
@@ -118,42 +144,27 @@ namespace Csharp_8
             (string firstName, string lastName) = p1;
         }
 
+        // Extensions - môžeme dekonštruova aj triedy, ktoré nie sú "naše"
         // https://github.com/Burgyn/Sample.DeconstructorsForNonTuple
-
-        #endregion
-
-        #region OutVars
-
-        public void OutVars()
-        {
-            Out(out int a);
-            Console.WriteLine($"after the invocation of {nameof(Out)}, {nameof(a)} = {a}");
-
-            TryParse();
-        }
-
-        void Out(out int x)
-        {
-            x = 2;
-        }
-
-        void TryParse()
-        {
-            if (int.TryParse("42", out int result))
-            {
-                Console.WriteLine($"the result is {result}");
-            }
-        }
 
         #endregion
 
         #region Expression Bodied Members
 
-        public void ExpressionBodiedMembers() => Foo();
-
-        void Foo()
+        class Person2
         {
-            Console.WriteLine("Expression called");
+            private static ConcurrentDictionary<int, string> names = new ConcurrentDictionary<int, string>();
+            private int id = GetId();
+
+            public Person2(string name) => names.TryAdd(id, name); // constructors
+            ~Person2() => names.TryRemove(id, out *);              // destructors
+            public string Name
+            {
+                get => names[id];                                 // getters
+                set => names[id] = value;                         // setters
+            }
+
+            private static int GetId() => 1;
         }
 
         #endregion
@@ -204,5 +215,14 @@ namespace Csharp_8
 
         #endregion
 
+        #region Generic Async Return Types
+
+        public async ValueTask<int> Func()
+        {
+            await Task.Delay(100);
+            return 5;
+        }
+
+        #endregion
     }
 }
