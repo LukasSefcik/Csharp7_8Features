@@ -4,7 +4,6 @@ namespace Csharp_8
 {
     public class Csharp71
     {
-
         #region Async Main
 
         // Predtým
@@ -58,6 +57,5 @@ namespace Csharp_8
         }
 
         #endregion
-
     }
 }

@@ -4,7 +4,6 @@ namespace Csharp_8
 {
     class Csharp73
     {
-
         #region Backing Fields Attributes (for auto-implemented properties)
 
         // Predtým
@@ -54,6 +53,5 @@ namespace Csharp_8
         }
 
         #endregion
-
     }
 }
